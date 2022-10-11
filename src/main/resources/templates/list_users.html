@@ -21,7 +21,14 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" th:href="@{/users}">User list</a>
+                <form th:action="@{/admin/info}" method = "post">
+                    <input type="submit" value="About admin"/>
+                </form>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method = "post">
+                    <input type="submit" value="Logout"/>
+                </form>
             </li>
         </ul>
     </div>
@@ -33,7 +40,7 @@
 
     <div class="raw">
         <div class="col-lg-3">
-            <a th:href="@{/users/new}" class="btn btn-primary btn-sm mb-3">Add user</a>
+            <a th:href="@{/admin/new}" class="btn btn-primary btn-sm mb-3">Add user</a>
         </div>
     </div>
 
@@ -45,6 +52,7 @@
             <th>SurName</th>
             <th>Department</th>
             <th>Salary</th>
+            <th>Actions</th>
         </tr>
         </thead>
 
@@ -55,11 +63,12 @@
             <td th:text="${user.surname}"></td>
             <td th:text="${user.department}"></td>
             <td th:text="${user.salary}"></td>
+
             <td>
-                <a th:href="@{/users/edit/{id}(id=${user.id})}"
+                <a th:href="@{/admin/edit/{id}(id=${user.id})}"
                    class="btn btn-primary">Edit</a>
 
-                <a th:href="@{/users/delete/{id}(id=${user.id})}"
+                <a th:href="@{/admin/delete/{id}(id=${user.id})}"
                    class="btn btn-danger">Delete</a>
 
             </td>

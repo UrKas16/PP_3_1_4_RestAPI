@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.repository;
+package ru.kata.spring.boot_security.demo.dao;
 
 import java.util.List;
 
@@ -14,4 +14,6 @@ public interface UserDao {
     List<User> getAllUsers();
 
     void deleteUserById(long id);
+
+    User getUserByUsername(String username);
 }
