@@ -3,62 +3,62 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.repository.UserRepoitory;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
+    private final UserRepoitory userRepoitory;
 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public UserServiceImpl(UserDao dao) {
-        this.userDao = dao;
+    public UserServiceImpl(UserRepoitory userRepoitory, PasswordEncoder passwordEncoder) {
+
+        this.userRepoitory = userRepoitory;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
-    @Transactional
     @Override
-    public void saveUser(User user) {
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
-        userDao.saveUser(user);
+    public void saveAndUpdateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepoitory.save(user);
     }
 
-    @Transactional
-    @Override
-    public void updateUser(User user) {
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
-        this.userDao.updateUser(user);
-    }
 
     @Override
     public User getUserById(long id) {
-        return this.userDao.getUserById(id);
+        User user = null;
+        Optional<User> optionalUser = userRepoitory.findById(id);
+
+        if (optionalUser.isPresent()){
+            user = optionalUser.get();
+        }
+        return user;
     }
 
-    @Transactional
+
     @Override
     public void deleteUserById(long id) {
-        this.userDao.deleteUserById(id);
+        userRepoitory.deleteById(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return this.userDao.getAllUsers();
+        return userRepoitory.findAll();
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userDao.getUserByUsername(username);
+        return userRepoitory.findUserByUserAlias(username);
     }
 }

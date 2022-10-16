@@ -2,35 +2,44 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.RoleDao;
 import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
-    private final RoleDao roleDao;
+    private final RoleRepository roleRepository;
 
-    public RoleServiceImpl(RoleDao roleDao) {
-        this.roleDao = roleDao;
+    public RoleServiceImpl(RoleRepository roleRepository) {
+
+        this.roleRepository = roleRepository;
     }
 
     @Transactional
     @Override
     public void saveRole(Role role) {
-        roleDao.saveRole(role);
+
+        roleRepository.save(role);
     }
 
     @Override
     public Role getRoleByID(int id) {
-        return roleDao.getRoleByID(id);
+        Role role = null;
+        Optional<Role> optionalRole = roleRepository.findById(id);
+
+        if (optionalRole.isPresent()) {
+            role = optionalRole.get();
+        }
+        return role;
     }
 
     @Override
-    public List<Role> getRoleByName(String name) {
+    public List<Role> getRoleByName(List<String> name) {
         List<Role> roles = new ArrayList<>();
         for (Role role : getAllRoles()) {
             if (name.contains(role.getNameRole()))
@@ -41,12 +50,13 @@ public class RoleServiceImpl implements RoleService{
 
     @Override
     public List<Role> getAllRoles() {
-        return roleDao.getAllRoles();
+
+        return roleRepository.findAll();
     }
 
     @Transactional
     @Override
     public void deleteRoleById(int id) {
-        roleDao.deleteRoleById(id);
+        roleRepository.deleteById(id);
     }
 }

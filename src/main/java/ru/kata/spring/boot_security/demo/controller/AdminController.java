@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
+import java.util.List;
 
 
 @Controller
@@ -45,9 +46,9 @@ public class AdminController {
 
     @PostMapping("")
     public String saveUser(@ModelAttribute("user") User user,
-                           @RequestParam(value = "nameRole", required = false) String nameRole) {
+                           @RequestParam(value = "nameRole", required = false) List<String> nameRole) {
         user.setRoles(roleService.getRoleByName(nameRole));
-        userService.saveUser(user);
+        userService.saveAndUpdateUser(user);
         return "redirect:/admin";
     }
 
@@ -60,9 +61,9 @@ public class AdminController {
 
     @PostMapping("/{id}")
     public String update(@ModelAttribute("user") User user,
-                         @RequestParam(value = "nameRole", required = false) String nameRole) {
+                         @RequestParam(value = "nameRole", required = false) List<String> nameRole) {
         user.setRoles(roleService.getRoleByName(nameRole));
-        userService.updateUser(user);
+        userService.saveAndUpdateUser(user);
         return "redirect:/admin";
     }
 

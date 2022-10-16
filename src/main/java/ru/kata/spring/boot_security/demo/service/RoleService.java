@@ -14,5 +14,5 @@ public interface RoleService {
 
     void deleteRoleById(int id);
 
-    List<Role> getRoleByName(String name);
+    List<Role> getRoleByName(List<String> name);
 }
