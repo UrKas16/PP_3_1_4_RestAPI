@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +10,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.security.Principal;
 import java.util.List;
 
 
@@ -24,42 +25,27 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @PostMapping("/info")
-    public String user(Principal principal, Model model) {
-        User admin = (User) userService.loadUserByUsername(principal.getName());
-        model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("admin", admin);
-        return "admin";
-    }
-
     @GetMapping("")
     public String getAllUsers(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User admin = (User) userService.loadUserByUsername(username);
+        model.addAttribute("admin", admin);
         model.addAttribute("users", userService.getAllUsers());
-        return "list_users";
+        model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("newUser", new User());
+        return "one_page_for_all";
     }
 
-    @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roleList", roleService.getAllRoles());
-        return "create_user";
-    }
-
-    @PostMapping("")
-    public String saveUser(@ModelAttribute("user") User user,
+    @PostMapping("/new")
+    public String saveUser(@ModelAttribute("newUser") User newUser,
                            @RequestParam(value = "nameRole", required = false) List<String> nameRole) {
-        user.setRoles(roleService.getRoleByName(nameRole));
-        userService.saveAndUpdateUser(user);
+        newUser.setRoles(roleService.getRoleByName(nameRole));
+        userService.saveAndUpdateUser(newUser);
         return "redirect:/admin";
     }
 
-    @GetMapping("/edit/{id}")
-    public String edit(@PathVariable("id") long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        model.addAttribute("roleList", roleService.getAllRoles());
-        return "edit_user";
-    }
-
-    @PostMapping("/{id}")
+    @PostMapping("/edit/{id}")
     public String update(@ModelAttribute("user") User user,
                          @RequestParam(value = "nameRole", required = false) List<String> nameRole) {
         user.setRoles(roleService.getRoleByName(nameRole));
