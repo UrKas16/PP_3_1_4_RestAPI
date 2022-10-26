@@ -1,8 +1,8 @@
-package ru.kata.spring.boot_security.demo.service;
+package ru.kata.spring.restapi.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.restapi.model.User;
 
 
 import java.util.List;

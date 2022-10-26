@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" th:value="${user.id}">
 
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -15,7 +15,7 @@
             <a class="font-weight-bold text-white" th:text="${user.userAlias}"></a>
             <a> with roles:</a>
             <a th:each="role : ${user.getRoles()}">
-                <a th:text="${role.toString()}">Roles</a>
+                <a th:text="${role.toString()}"></a>
             </a>
             <a th:href="@{/logout}" class="float-right text-secondary"> Logout </a>
         </div>
@@ -25,6 +25,7 @@
                 <li class="nav-pills ">
                     <!--Маркер #user на кнопку-->
                     <a class="nav-link" data-toggle="tab" href="#user">User</a>
+                    <h1 id="a"></h1>
                 </li>
             </ul>
         </div>
@@ -37,11 +38,11 @@
                 <table class="table table-striped bg-white">
                     <tbody class="border">
                     <tr>
-                        <th>About User</th>
+                        <th id="111">About User</th>
                     </tr>
                     <tr>
                         <td>
-                            <form th:method="get" th:object="${user}">
+                            <form>
                                 <table class="table table-header table-hover" th:cols="9">
                                     <thead class="thead align-content-center">
                                     <tr class="b">
@@ -54,18 +55,7 @@
                                         <th>Roles</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td th:text="${user.id}"></td>
-                                        <td th:text="${user.userAlias}"></td>
-                                        <td th:text="${user.name}"></td>
-                                        <td th:text="${user.surname}"></td>
-                                        <td th:text="${user.department}"></td>
-                                        <td th:text="${user.salary}"></td>
-                                        <td><a th:each="role : ${user.getRoles()}">
-                                            <a th:text="${role.toString()}"></a>
-                                        </a></td>
-                                    </tr>
+                                    <tbody id="headUserTableInfo">
                                     </tbody>
                                 </table>
                             </form>
@@ -85,5 +75,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script th:inline="javascript">
+    let headUserIdFromHtml = [[${user.id}]];
+</script>
+<script th:src="@{../static/general.js}"></script>
 </body>
 </html>

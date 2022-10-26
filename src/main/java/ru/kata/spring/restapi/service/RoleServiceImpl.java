@@ -1,9 +1,9 @@
-package ru.kata.spring.boot_security.demo.service;
+package ru.kata.spring.restapi.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.restapi.model.Role;
+import ru.kata.spring.restapi.repository.RoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;

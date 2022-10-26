@@ -1,6 +1,6 @@
-package ru.kata.spring.boot_security.demo.service;
+package ru.kata.spring.restapi.service;
 
-import ru.kata.spring.boot_security.demo.model.Role;
+import ru.kata.spring.restapi.model.Role;
 
 import java.util.List;
 

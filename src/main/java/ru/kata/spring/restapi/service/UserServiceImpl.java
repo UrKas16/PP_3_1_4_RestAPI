@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.service;
+package ru.kata.spring.restapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repository.UserRepoitory;
+import ru.kata.spring.restapi.model.User;
+import ru.kata.spring.restapi.repository.UserRepoitory;
 
 import java.util.List;
 import java.util.Optional;
